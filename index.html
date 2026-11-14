@@ -7,7 +7,7 @@
 
   <!-- Metadata del sitio -->
   <title>Mahjong Emoji – Solitario</title>
-  <meta name="description" content="Solitario Mahjong con emojis: empareja las fichas libres hasta vaciar el tablero. Juega con teclado, táctil o mando.">
+  <meta name="description" content="Solitario Mahjong con emojis: empareja las fichas libres hasta vaciar el tablero. Juega con toque, teclado o mando.">
   <meta name="keywords" content="mahjong, solitario, emojis, juego, phaser, navegador, móvil">
   <meta name="author" content="Trigataro">
   <meta name="robots" content="index, follow">
@@ -46,9 +46,9 @@
         <span class="stat" title="Mejor tiempo">🏆 <b id="hud-best">--:--</b></span>
       </div>
       <div id="toolbar">
-        <button class="tool desk" data-action="hint" aria-label="Pista" title="Pista (H)">💡</button>
-        <button class="tool desk" data-action="undo" aria-label="Deshacer" title="Deshacer (U)">↩️</button>
-        <button class="tool desk" data-action="shuffle" aria-label="Barajar" title="Barajar (B)">🔀</button>
+        <button class="tool" data-action="hint" aria-label="Pista" title="Pista (H)">💡</button>
+        <button class="tool" data-action="undo" aria-label="Deshacer" title="Deshacer (U)">↩️</button>
+        <button class="tool" data-action="shuffle" aria-label="Barajar" title="Barajar (B)">🔀</button>
         <button class="tool" id="btn-music" data-action="music" aria-label="Música" title="Música (M)">🎵</button>
         <button class="tool" data-action="theme" aria-label="Cambiar tema" title="Cambiar tema">🎨</button>
         <button class="tool" data-action="share" aria-label="Compartir" title="Compartir">📤</button>
@@ -56,22 +56,9 @@
       </div>
     </header>
 
-    <!-- Zona de juego: joystick a la izquierda, tablero al centro, botones a la derecha -->
+    <!-- El tablero se juega directamente con toque en celulares y con clic en computador -->
     <main id="stage">
-      <div id="pad-left" class="pad" aria-label="Joystick virtual">
-        <div id="joystick"><div id="joystick-knob"></div></div>
-      </div>
-
       <div id="game" aria-label="Tablero de Mahjong"></div>
-
-      <div id="pad-right" class="pad" aria-label="Botones virtuales">
-        <div id="vbuttons">
-          <button class="vbtn" data-action="select" aria-label="Seleccionar">✔️</button>
-          <button class="vbtn" data-action="hint" aria-label="Pista">💡</button>
-          <button class="vbtn" data-action="undo" aria-label="Deshacer">↩️</button>
-          <button class="vbtn" data-action="shuffle" aria-label="Barajar">🔀</button>
-        </div>
-      </div>
     </main>
 
     <!-- Pie de página -->
@@ -98,8 +85,13 @@
   <!-- Mensajes breves -->
   <div id="toast" hidden role="status"></div>
 
-  <!-- Phaser (última versión) y lógica del juego -->
+  <!-- Phaser (última versión) y lógica dividida por responsabilidad -->
   <script src="https://cdn.jsdelivr.net/npm/phaser@latest/dist/phaser.min.js"></script>
-  <script src="index.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/board.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/controls.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>
