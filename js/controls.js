@@ -23,6 +23,7 @@ function runAction(name) {
     else if (name === 'theme') { cycleTheme(); if (overlayKind === 'pause') pauseMenu(overlayIdx); }
     else if (name === 'share') share();
     else if (name === 'music') { setMusic(!music.on); if (overlayKind === 'pause') pauseMenu(overlayIdx); }
+    else if (name === 'sound') { setSound(!sound.on); if (overlayKind === 'pause') pauseMenu(overlayIdx); }
     return;
   }
 
@@ -39,6 +40,7 @@ function runAction(name) {
     case 'theme': cycleTheme(); break;
     case 'share': share(); break;
     case 'music': setMusic(!music.on); break;
+    case 'sound': setSound(!sound.on); break;
     default: break;
   }
 }

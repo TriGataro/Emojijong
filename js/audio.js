@@ -5,14 +5,16 @@
 const music = {
   on: true,        // música activada por el jugador
   ctx: null,       // contexto de audio
-  bus: null,       // entrada de efectos
+  bus: null,       // entrada del audio musical
   master: null,    // volumen general
+  effects: null,   // salida independiente para efectos de juego
   timer: null,     // planificador
   nextChord: 0,    // próximo momento para un acorde
   nextNote: 0,     // próximo momento para una nota de melodía
   chordIdx: 0,
   lastNote: 4
 };
+const sound = { on: true };
 
 // Acordes (notas MIDI): Do mayor 7 – La menor 7 – Fa mayor 7 – Sol 6
 const CHORDS = [
@@ -37,6 +39,9 @@ function ensureAudio() {
     const master = ctx.createGain();
     master.gain.value = music.on ? 0.9 : 0;
     master.connect(ctx.destination);
+    const effects = ctx.createGain();
+    effects.gain.value = sound.on ? 0.55 : 0;
+    effects.connect(ctx.destination);
 
     // Entrada → filtro suave → salida, más un eco que da sensación de espacio
     const bus = ctx.createGain();
@@ -61,6 +66,7 @@ function ensureAudio() {
     music.ctx = ctx;
     music.master = master;
     music.bus = bus;
+    music.effects = effects;
     return true;
   } catch (e) {
     return false;
@@ -68,7 +74,7 @@ function ensureAudio() {
 }
 
 // Una nota con entrada y salida suaves
-function tone(freq, start, dur, vol, type, attack, release) {
+function tone(freq, start, dur, vol, type, attack, release, output = music.bus) {
   const ctx = music.ctx;
   const osc = ctx.createOscillator();
   const g = ctx.createGain();
@@ -79,7 +85,7 @@ function tone(freq, start, dur, vol, type, attack, release) {
   g.gain.setValueAtTime(vol, Math.max(start + attack, start + dur - release));
   g.gain.linearRampToValueAtTime(0, start + dur);
   osc.connect(g);
-  g.connect(music.bus);
+  g.connect(output);
   osc.start(start);
   osc.stop(start + dur + 0.05);
 }
@@ -145,18 +151,62 @@ function setMusic(on) {
 
 function updateMusicButton() {
   const btn = $('btn-music');
-  if (btn) btn.textContent = music.on ? '🎵' : '🔇';
+  if (!btn) return;
+  btn.textContent = music.on ? '🎵' : '🔇';
+  btn.setAttribute('aria-label', music.on ? 'Silenciar música' : 'Activar música');
+  btn.title = music.on ? 'Silenciar música (M)' : 'Activar música (M)';
+}
+
+function setSound(on) {
+  sound.on = on;
+  store.set(KEY_SOUND, on ? '1' : '0');
+  if (music.ctx && music.effects) {
+    music.effects.gain.setTargetAtTime(on ? 0.55 : 0, music.ctx.currentTime, 0.08);
+  }
+  updateSoundButton();
+}
+
+function updateSoundButton() {
+  const btn = $('btn-sound');
+  if (!btn) return;
+  btn.textContent = sound.on ? '🔊' : '🔇';
+  btn.setAttribute('aria-label', sound.on ? 'Silenciar efectos de sonido' : 'Activar efectos de sonido');
+  btn.title = sound.on ? 'Silenciar efectos de sonido' : 'Activar efectos de sonido';
+}
+
+function playSoundSequence(notes, useEffectsOutput) {
+  if ((useEffectsOutput ? !sound.on : !music.on) || !ensureAudio()) return;
+  const ctx = music.ctx;
+  const output = useEffectsOutput ? music.effects : music.bus;
+  const play = () => {
+    const start = ctx.currentTime + 0.03;
+    notes.forEach((note) => {
+      tone(midiHz(note.midi), start + note.offset, note.duration, note.volume, note.type, 0.01, note.release, output);
+    });
+  };
+  if (ctx.state === 'suspended') ctx.resume().then(play).catch(() => {});
+  else play();
+}
+
+function playCorrectSound() {
+  playSoundSequence([
+    { midi: 76, offset: 0, duration: 0.18, volume: 0.12, type: 'sine', release: 0.08 },
+    { midi: 81, offset: 0.1, duration: 0.24, volume: 0.13, type: 'sine', release: 0.12 }
+  ], true);
+}
+
+function playErrorSound() {
+  playSoundSequence([
+    { midi: 58, offset: 0, duration: 0.2, volume: 0.1, type: 'triangle', release: 0.1 },
+    { midi: 53, offset: 0.1, duration: 0.25, volume: 0.1, type: 'triangle', release: 0.13 }
+  ], true);
 }
 
 // Sonido corto de celebración al ganar
 function playChime() {
-  if (!music.on || !ensureAudio()) return;
-  const ctx = music.ctx;
-  if (ctx.state === 'suspended') ctx.resume();
-  const t0 = ctx.currentTime + 0.05;
-  [72, 76, 79, 84, 88].forEach((m, i) => {
-    tone(midiHz(m), t0 + i * 0.16, 1.6, 0.09, 'sine', 0.02, 1.2);
-  });
+  playSoundSequence([72, 76, 79, 84, 88].map((midi, i) => ({
+    midi, offset: 0.02 + i * 0.16, duration: 1.6, volume: 0.09, type: 'sine', release: 1.2
+  })));
 }
 
 // Los navegadores solo permiten audio tras una interacción: se arranca con la primera

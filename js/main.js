@@ -47,7 +47,9 @@ function createGame() {
 function loadPrefs() {
   applyTheme(store.get(KEY_THEME) || 'clasico');
   music.on = store.get(KEY_MUSIC) !== '0';   // la música está activada por defecto
+  sound.on = store.get(KEY_SOUND) !== '0';   // los efectos de sonido están activados por defecto
   updateMusicButton();
+  updateSoundButton();
   updateHud();
 }
 

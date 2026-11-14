@@ -22,9 +22,11 @@ const EMOJI_FONT = '"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji","Twe
 // Tamaño lógico del lienzo y de las fichas (Phaser lo escala para ajustarse a la pantalla)
 const W = 920, H = 660;
 const CELL_W = 88, CELL_H = 104;     // separación entre casillas
-const TW = 84, TH = 100;             // tamaño de cada ficha
-const LAYER_OFF = -6;                // desplazamiento visual por cada capa (efecto 3D)
-const RADIUS = 10;                   // radio de las esquinas de la ficha
+const TILE_SCALE = typeof window !== 'undefined' &&
+  ((window.matchMedia && window.matchMedia('(pointer: coarse)').matches) || window.innerWidth <= 700) ? 1.2 : 1;
+const TW = 84 * TILE_SCALE, TH = 100 * TILE_SCALE;
+const LAYER_OFF = -6 * TILE_SCALE;   // desplazamiento visual por cada capa (efecto 3D)
+const RADIUS = 10 * TILE_SCALE;      // radio de las esquinas de la ficha
 const COLS = 10, ROWS = 6;
 const X0 = (W - COLS * CELL_W) / 2 + CELL_W / 2;
 const Y0 = (H - ROWS * CELL_H) / 2 + CELL_H / 2 + 6;
@@ -41,6 +43,7 @@ const THEMES = [
 const KEY_BEST = 'mahjong-emoji:best';
 const KEY_THEME = 'mahjong-emoji:theme';
 const KEY_MUSIC = 'mahjong-emoji:music';
+const KEY_SOUND = 'mahjong-emoji:sound';
 
 // Cada diseño contiene capas de 6 filas por 10 columnas; '#' es una ficha y '.' un hueco.
 // Cada cambio de partida elige un diseño distinto.

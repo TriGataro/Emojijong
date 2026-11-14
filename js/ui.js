@@ -47,6 +47,7 @@ function pauseMenu(focusIdx) {
     { label: '🎲 Nueva partida', action: () => { hideOverlay(); startGame(false); } },
     { label: '🎨 Tema: ' + themeName(), action: () => { cycleTheme(); pauseMenu(overlayIdx); } },
     { label: (music.on ? '🎵 Música: sí' : '🔇 Música: no'), action: () => { setMusic(!music.on); pauseMenu(overlayIdx); } },
+    { label: (sound.on ? '🔊 Efectos: sí' : '🔇 Efectos: no'), action: () => { setSound(!sound.on); pauseMenu(overlayIdx); } },
     { label: '📤 Compartir', action: share }
   ], focusIdx);
 }

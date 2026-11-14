@@ -12,9 +12,9 @@ function drawTile(t) {
   g.fillRoundedRect(-TW / 2 + 4, -TH / 2 + 6, TW, TH, RADIUS);
   g.fillGradientStyle(THEME.tileTop, THEME.tileTop, THEME.tileBottom, THEME.tileBottom, 1);
   g.fillRoundedRect(-TW / 2, -TH / 2, TW, TH, RADIUS);
-  g.lineStyle(2, THEME.edge, 1);
+  g.lineStyle(2 * TILE_SCALE, THEME.edge, 1);
   g.strokeRoundedRect(-TW / 2, -TH / 2, TW, TH, RADIUS);
-  g.lineStyle(2, THEME.highlight, 0.9);
+  g.lineStyle(2 * TILE_SCALE, THEME.highlight, 0.9);
   g.strokeRoundedRect(-TW / 2 + 4, -TH / 2 + 4, TW - 8, TH - 8, RADIUS - 3);
 
   // Capa oscura que se muestra cuando la ficha está bloqueada
@@ -32,7 +32,7 @@ function createNode(t) {
   const g = scene.add.graphics();
   const txt = scene.add.text(-1, 2, FACES[t.face], {
     fontFamily: EMOJI_FONT,
-    fontSize: '54px',
+    fontSize: (54 * TILE_SCALE) + 'px',
     padding: { x: 4, y: 8 },
     resolution: 2
   }).setOrigin(0.5);
@@ -51,10 +51,10 @@ function refreshTile(t) {
   if (!t.alive || !t.node) return;
   t.dim.setVisible(!isFree(t));
 
-  let color = null, width = 4;
-  if (t === state.selected) { color = THEME.selected; width = 6; }
-  else if (state.hint && state.hint.includes(t)) { color = THEME.hint; width = 6; }
-  else if (state.cursorVisible && t === state.cursor) { color = THEME.cursor; width = 5; }
+  let color = null, width = 4 * TILE_SCALE;
+  if (t === state.selected) { color = THEME.selected; width = 6 * TILE_SCALE; }
+  else if (state.hint && state.hint.includes(t)) { color = THEME.hint; width = 6 * TILE_SCALE; }
+  else if (state.cursorVisible && t === state.cursor) { color = THEME.cursor; width = 5 * TILE_SCALE; }
 
   t.ring.clear();
   if (color !== null) {
@@ -160,6 +160,7 @@ function activate(t) {
   state.hint = null;
 
   if (!isFree(t)) {
+    playErrorSound();
     shake(t);
     refreshAll();
     return;
@@ -169,9 +170,11 @@ function activate(t) {
   } else if (state.selected === t) {
     state.selected = null;
   } else if (state.selected.face === t.face) {
+    playCorrectSound();
     removePair(state.selected, t);
     return;
   } else {
+    playErrorSound();
     state.selected = t;   // cara distinta: cambia la selección
   }
   refreshAll();
@@ -390,10 +393,15 @@ function moveCursor(dx, dy) {
 // Ficha bajo un punto del lienzo (la de la capa más alta)
 function pickTile(x, y) {
   let best = null;
+  let bestDistance = Infinity;
   state.tiles.forEach((t) => {
     if (!t.alive) return;
     if (Math.abs(x - t.px) <= TW / 2 && Math.abs(y - t.py) <= TH / 2) {
-      if (!best || t.z > best.z) best = t;
+      const distance = (x - t.px) ** 2 + (y - t.py) ** 2;
+      if (!best || t.z > best.z || (t.z === best.z && distance < bestDistance)) {
+        best = t;
+        bestDistance = distance;
+      }
     }
   });
   return best;
