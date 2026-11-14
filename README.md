@@ -1,2 +1,2 @@
-# Emojidoku
-Sodoku con emojis
+# 
+Mahjong con emojis
