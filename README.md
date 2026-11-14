@@ -1,0 +1,2 @@
+# Emojidoku
+Sodoku con emojis
