@@ -1,0 +1,9 @@
+# Ignorar carpetas y archivos ocultos
+.*
+.*/
+
+# Carpeta de agentes
+.agents/
+
+# Mantener este archivo versionado
+!.gitignore

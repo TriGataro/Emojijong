@@ -1,0 +1,411 @@
+/* ===== Temas de color (variables) ===== */
+:root,
+html[data-theme="clasico"] {
+  --bg: #0f3d24;
+  --table: #14532d;
+  --text: #fdf6e3;
+  --accent: #f4c430;
+  --btn-bg: #1e6b3f;
+  --btn-text: #ffffff;
+  --panel: #fdf6e3;
+  --panel-text: #2b2b2b;
+  --tile-face: #fff8e1;
+  --tile-side: #2e9d5c;
+  --tile-edge: #c9b98a;
+  --tile-shadow: #000000;
+  --tile-dim: #000000;
+  --selected: #ffb300;
+  --hint: #00c853;
+  --cursor: #1e88e5;
+}
+
+html[data-theme="oscuro"] {
+  --bg: #0b0f19;
+  --table: #111827;
+  --text: #e5e7eb;
+  --accent: #fbbf24;
+  --btn-bg: #374151;
+  --btn-text: #f9fafb;
+  --panel: #1f2937;
+  --panel-text: #f3f4f6;
+  --tile-face: #e8eaf0;
+  --tile-side: #4f5d95;
+  --tile-edge: #9aa3c7;
+  --tile-shadow: #000000;
+  --tile-dim: #000000;
+  --selected: #fbbf24;
+  --hint: #34d399;
+  --cursor: #38bdf8;
+}
+
+html[data-theme="claro"] {
+  --bg: #e5ecf5;
+  --table: #cfdff0;
+  --text: #1f2937;
+  --accent: #b45309;
+  --btn-bg: #2563eb;
+  --btn-text: #ffffff;
+  --panel: #ffffff;
+  --panel-text: #1f2937;
+  --tile-face: #ffffff;
+  --tile-side: #7aa2d6;
+  --tile-edge: #b8c7dc;
+  --tile-shadow: #1e3a5f;
+  --tile-dim: #1e3a5f;
+  --selected: #f59e0b;
+  --hint: #16a34a;
+  --cursor: #2563eb;
+}
+
+html[data-theme="contraste"] {
+  --bg: #000000;
+  --table: #000000;
+  --text: #ffffff;
+  --accent: #ffd400;
+  --btn-bg: #000000;
+  --btn-text: #ffffff;
+  --panel: #000000;
+  --panel-text: #ffffff;
+  --tile-face: #ffffff;
+  --tile-side: #ffd400;
+  --tile-edge: #000000;
+  --tile-shadow: #444444;
+  --tile-dim: #000000;
+  --selected: #ff00ff;
+  --hint: #00ff00;
+  --cursor: #00e5ff;
+}
+
+/* ===== Base ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  /* Bloquea seleccionar / copiar / pegar y el menú táctil largo */
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  /* Evita el zoom por doble toque */
+  touch-action: manipulation;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+html {
+  /* Evita que iOS agrande el texto al girar la pantalla */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+img,
+a {
+  -webkit-user-drag: none;
+}
+
+/* ===== Barra superior ===== */
+#topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 12px;
+  padding: 6px 10px;
+  background: var(--bg);
+}
+
+#topbar h1 {
+  margin: 0;
+  font-size: 1.1rem;
+  white-space: nowrap;
+}
+
+#hud {
+  display: flex;
+  gap: 8px;
+}
+
+.stat {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(127, 127, 127, 0.25);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+html[data-theme="contraste"] .stat {
+  border: 1px solid var(--text);
+  background: transparent;
+}
+
+#toolbar {
+  display: flex;
+  gap: 6px;
+}
+
+.tool {
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+html[data-theme="contraste"] .tool,
+html[data-theme="contraste"] .vbtn,
+html[data-theme="contraste"] .menu-btn {
+  border: 2px solid var(--text);
+}
+
+.tool:active,
+.vbtn:active,
+.menu-btn:active {
+  transform: scale(0.94);
+}
+
+/* ===== Zona de juego ===== */
+#stage {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "game";
+  background: var(--table);
+}
+
+#game {
+  grid-area: game;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  touch-action: none;
+}
+
+#game canvas {
+  display: block;
+  touch-action: none;
+}
+
+/* Controles virtuales: ocultos salvo en pantallas táctiles */
+.pad {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}
+
+#pad-left { grid-area: left; }
+#pad-right { grid-area: right; }
+
+#joystick {
+  position: relative;
+  width: clamp(96px, 26vmin, 150px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  border: 3px solid rgba(255, 255, 255, 0.45);
+  touch-action: none;
+}
+
+#joystick-knob {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 42%;
+  height: 42%;
+  margin: -21% 0 0 -21%;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+}
+
+#vbuttons {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: 10px;
+}
+
+.vbtn {
+  width: clamp(54px, 14vmin, 78px);
+  height: clamp(54px, 14vmin, 78px);
+  border: 0;
+  border-radius: 50%;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  font-size: clamp(1.4rem, 5vmin, 2rem);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+  touch-action: none;
+}
+
+/* Pantallas táctiles: joystick a la izquierda y botones a la derecha */
+@media (pointer: coarse) {
+  #stage {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas: "left game right";
+  }
+
+  .pad {
+    display: flex;
+  }
+
+  .desk {
+    display: none;
+  }
+}
+
+/* Táctil en vertical: tablero arriba, controles abajo (izquierda y derecha) */
+@media (pointer: coarse) and (orientation: portrait) {
+  #stage {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "game game"
+      "left right";
+  }
+}
+
+/* ===== Pie de página ===== */
+#footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 4px 8px;
+  font-size: 0.85rem;
+  background: var(--bg);
+  color: var(--text);
+}
+
+#footer a {
+  display: inline-flex;
+  align-items: center;
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+#footer a:hover {
+  text-decoration: underline;
+}
+
+/* ===== Pantalla de opciones ===== */
+#overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.65);
+}
+
+.panel {
+  width: min(92vw, 400px);
+  max-height: 92vh;
+  overflow-y: auto;
+  padding: 20px;
+  border-radius: 18px;
+  background: var(--panel);
+  color: var(--panel-text);
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+html[data-theme="contraste"] .panel {
+  border: 3px solid var(--text);
+}
+
+.panel h2 {
+  margin: 0 0 6px;
+  font-size: 1.5rem;
+}
+
+.panel p {
+  margin: 0 0 14px;
+  font-size: 1rem;
+  opacity: 0.85;
+}
+
+#overlay-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.menu-btn {
+  min-height: 52px;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.menu-btn.primary {
+  background: var(--accent);
+  color: #1a1a1a;
+}
+
+.menu-btn.focus {
+  outline: 4px solid var(--cursor);
+  outline-offset: 2px;
+}
+
+/* ===== Mensajes breves ===== */
+#toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(60px + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 20;
+  max-width: 90vw;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.85);
+  color: #ffffff;
+  font-size: 0.95rem;
+  text-align: center;
+  pointer-events: none;
+}
+
+/* Pantallas pequeñas */
+@media (max-width: 480px) {
+  #topbar h1 { font-size: 1rem; }
+  .stat { font-size: 0.8rem; padding: 3px 8px; }
+  .tool { width: 38px; height: 38px; }
+}

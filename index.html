@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="clasico">
+<head>
+  <meta charset="utf-8">
+  <!-- Sin zoom, ocupa toda la pantalla (incluye zonas seguras de iOS) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+
+  <!-- Metadata del sitio -->
+  <title>Mahjong Emoji – Solitario</title>
+  <meta name="description" content="Solitario Mahjong con emojis: empareja las fichas libres hasta vaciar el tablero. Juega con teclado, táctil o mando.">
+  <meta name="keywords" content="mahjong, solitario, emojis, juego, phaser, navegador, móvil">
+  <meta name="author" content="Trigataro">
+  <meta name="robots" content="index, follow">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#14532d">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Mahjong Emoji">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Mahjong Emoji – Solitario">
+  <meta property="og:description" content="Empareja las fichas de emojis hasta vaciar el tablero. ¡Prueba a batir tu récord!">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:site_name" content="Mahjong Emoji">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Mahjong Emoji – Solitario">
+  <meta name="twitter:description" content="Empareja las fichas de emojis hasta vaciar el tablero.">
+
+  <!-- Icono del sitio (emoji como SVG) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%80%84%3C/text%3E%3C/svg%3E">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+
+    <!-- Barra superior: título, marcadores y botones -->
+    <header id="topbar">
+      <h1>🀄 Mahjong Emoji</h1>
+      <div id="hud">
+        <span class="stat" title="Tiempo">⏱️ <b id="hud-time">00:00</b></span>
+        <span class="stat" title="Parejas restantes">🧩 <b id="hud-pairs">0</b></span>
+        <span class="stat" title="Mejor tiempo">🏆 <b id="hud-best">--:--</b></span>
+      </div>
+      <div id="toolbar">
+        <button class="tool desk" data-action="hint" aria-label="Pista" title="Pista (H)">💡</button>
+        <button class="tool desk" data-action="undo" aria-label="Deshacer" title="Deshacer (U)">↩️</button>
+        <button class="tool desk" data-action="shuffle" aria-label="Barajar" title="Barajar (B)">🔀</button>
+        <button class="tool" id="btn-music" data-action="music" aria-label="Música" title="Música (M)">🎵</button>
+        <button class="tool" data-action="theme" aria-label="Cambiar tema" title="Cambiar tema">🎨</button>
+        <button class="tool" data-action="share" aria-label="Compartir" title="Compartir">📤</button>
+        <button class="tool" data-action="pause" aria-label="Pausa" title="Pausa (P)">⏸️</button>
+      </div>
+    </header>
+
+    <!-- Zona de juego: joystick a la izquierda, tablero al centro, botones a la derecha -->
+    <main id="stage">
+      <div id="pad-left" class="pad" aria-label="Joystick virtual">
+        <div id="joystick"><div id="joystick-knob"></div></div>
+      </div>
+
+      <div id="game" aria-label="Tablero de Mahjong"></div>
+
+      <div id="pad-right" class="pad" aria-label="Botones virtuales">
+        <div id="vbuttons">
+          <button class="vbtn" data-action="select" aria-label="Seleccionar">✔️</button>
+          <button class="vbtn" data-action="hint" aria-label="Pista">💡</button>
+          <button class="vbtn" data-action="undo" aria-label="Deshacer">↩️</button>
+          <button class="vbtn" data-action="shuffle" aria-label="Barajar">🔀</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Pie de página -->
+    <footer id="footer">
+      <span>Página hecha por</span>
+      <a class="gh" href="https://github.com/TriGataro" target="_blank" rel="noopener noreferrer" aria-label="GitHub de Trigataro">
+        <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true" focusable="false">
+          <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+        </svg>
+      </a>
+      <a href="https://github.com/TriGataro" target="_blank" rel="noopener noreferrer">Trigataro</a>
+    </footer>
+  </div>
+
+  <!-- Pantalla de opciones (pausa, fin de juego, sin movimientos, aviso de almacenamiento) -->
+  <div id="overlay" hidden>
+    <div class="panel" role="dialog" aria-modal="true" aria-labelledby="overlay-title">
+      <h2 id="overlay-title"></h2>
+      <p id="overlay-text"></p>
+      <div id="overlay-buttons"></div>
+    </div>
+  </div>
+
+  <!-- Mensajes breves -->
+  <div id="toast" hidden role="status"></div>
+
+  <!-- Phaser (última versión) y lógica del juego -->
+  <script src="https://cdn.jsdelivr.net/npm/phaser@latest/dist/phaser.min.js"></script>
+  <script src="index.js"></script>
+</body>
+</html>
