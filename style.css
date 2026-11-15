@@ -98,8 +98,6 @@ html[data-theme="contraste"] {
   user-select: none;
   -webkit-touch-callout: none;
   -webkit-tap-highlight-color: transparent;
-  /* Evita el zoom por doble toque */
-  touch-action: manipulation;
 }
 
 [hidden] {

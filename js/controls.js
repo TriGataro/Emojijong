@@ -128,7 +128,7 @@ function bindButtons() {
 function bindGuards() {
   const block = (e) => e.preventDefault();
   // Bloquea seleccionar, copiar, cortar, pegar, arrastrar y menú contextual
-  ['copy', 'cut', 'paste', 'selectstart', 'dragstart', 'contextmenu', 'dblclick', 'gesturestart']
+  ['copy', 'cut', 'paste', 'selectstart', 'dragstart', 'contextmenu']
     .forEach((name) => document.addEventListener(name, block));
   // Evita que los botones tomen el foco con el ratón (así Enter/Espacio no los activa dos veces)
   document.addEventListener('mousedown', (e) => {
