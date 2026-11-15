@@ -16,6 +16,5 @@ Al crear o modificar código en este proyecto:
 1. Pare el movimiento debe usar las fechas del teclado y las teclas W,A,S,D
 1. Se debe bloquear el seleccionar, copiar y pegar
 1. Debe reconocer si se conectar un joystick si es posible
-1. Desactiva el zoom por doble toque en toda la página y evita que iOS agrande el texto al girar
 1. Debe tener una pantalla de opciones de juego tactil cuando de pause o cuando se termine el juego.  
 1. Agrega metadata del sitio

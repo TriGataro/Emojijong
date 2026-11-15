@@ -23,7 +23,7 @@ const EMOJI_FONT = '"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji","Twe
 const W = 920, H = 660;
 const CELL_W = 88, CELL_H = 104;     // separación entre casillas
 const TILE_SCALE = typeof window !== 'undefined' &&
-  ((window.matchMedia && window.matchMedia('(pointer: coarse)').matches) || window.innerWidth <= 700) ? 1.2 : 1;
+  ((window.matchMedia && window.matchMedia('(pointer: coarse)').matches) || window.innerWidth <= 700) ? 1.4 : 1;
 const TW = 84 * TILE_SCALE, TH = 100 * TILE_SCALE;
 const LAYER_OFF = -6 * TILE_SCALE;   // desplazamiento visual por cada capa (efecto 3D)
 const RADIUS = 10 * TILE_SCALE;      // radio de las esquinas de la ficha
